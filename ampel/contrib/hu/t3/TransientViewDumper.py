@@ -99,3 +99,4 @@ class TransientViewDumper(AbsT3ReviewUnit):
                     self.logger.info(element.text)
             else:
                 response.raise_for_status()
+        return None
