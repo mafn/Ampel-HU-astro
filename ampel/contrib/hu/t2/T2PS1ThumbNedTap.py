@@ -15,7 +15,7 @@ from ampel.contrib.hu.util.ned import check_ned_res
 from ampel.abstract.AbsTiedPointT2Unit import AbsTiedPointT2Unit
 from ampel.util.collections import ampel_iter
 from ampel.content.DataPoint import DataPoint
-from ampel.plot.utils import mplfig_to_svg_dict1
+from ampel.plot.create import mplfig_to_svg_dict1
 from ampel.enum.DocumentCode import DocumentCode
 from ampel.struct.UnitResult import UnitResult
 from ampel.model.PlotProperties import PlotProperties
