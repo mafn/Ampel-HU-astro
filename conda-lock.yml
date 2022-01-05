@@ -16,7 +16,7 @@ metadata:
   channels:
   - conda-forge
   content_hash:
-    linux-64: 53650042df002792f6fa4ebbc3881d27a3300b5551aac19d1afe11df66da685f
+    linux-64: 914a63a8342adb0f156071fff384512d338af97d4603b91dc67991730795b0ae
   platforms:
   - linux-64
   sources:
@@ -42,6 +42,18 @@ package:
   platform: linux-64
   url: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-1_gnu.tar.bz2
   version: '4.5'
+- category: main
+  dependencies:
+    matplotlib-base: ''
+    numpy: ''
+    python: ''
+  hash: md5:1e4a4438639a2e3e762f0cd4b43c984e
+  manager: conda
+  name: adjusttext
+  optional: false
+  platform: linux-64
+  url: https://conda.anaconda.org/conda-forge/noarch/adjusttext-0.7.3.1-py_1.tar.bz2
+  version: 0.7.3.1
 - category: main
   dependencies:
     importlib-metadata: ''
@@ -1155,6 +1167,20 @@ package:
   platform: linux-64
   url: https://conda.anaconda.org/conda-forge/linux-64/scipy-1.7.3-py310hea5193d_0.tar.bz2
   version: 1.7.3
+- category: main
+  dependencies:
+    matplotlib-base: '>=2.2'
+    numpy: '>=1.15'
+    pandas: '>=0.23'
+    python: '>=3.6'
+    scipy: '>=1.0.1'
+  hash: md5:fe2303dc8f1febeb82d927ce8ad153ed
+  manager: conda
+  name: seaborn-base
+  optional: false
+  platform: linux-64
+  url: https://conda.anaconda.org/conda-forge/noarch/seaborn-base-0.11.2-pyhd8ed1ab_0.tar.bz2
+  version: 0.11.2
 - category: main
   dependencies:
     python: '>=3.10,<3.11.0a0'
