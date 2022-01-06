@@ -1,6 +1,6 @@
 name: AmpelAutoLco
 tier: 3
-active: true
+active: false
 template: ztf_periodic_summary
 schedule: every(10).minutes
 channel:
@@ -10,11 +10,12 @@ load:
   - TRANSIENT
   - DATAPOINT
   - T2RECORD
-filter: 
-  t2: 
-    unit: T2InfantCatalogEval
-    match: 
-      action: true
+# FIXME: restore when nested models work again
+# filter: 
+#   t2: 
+#     unit: T2InfantCatalogEval
+#     match: 
+#       action: true
 run:
   - unit: SlackSummaryPublisher
     config: slack-ztf_general

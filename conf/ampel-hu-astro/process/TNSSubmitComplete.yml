@@ -1,4 +1,5 @@
 name: TNSSubmitComplete
+active: false
 tier: 3
 template: ztf_periodic_summary
 schedule: every(60).minutes
@@ -11,11 +12,12 @@ load:
   - col: t2
     query_complement: {unit: {$in: [T2TNSEval, T2LightCurveSummary]}}
 complement: TNSNames
-filter:
-  t2:
-    unit: T2TNSEval
-    match: 
-      tns_candidate: true
+# FIXME: restore when nested models work again
+# filter:
+#   t2:
+#     unit: T2TNSEval
+#     match: 
+#       tns_candidate: true
 run:
   unit: TNSTalker
   config:
