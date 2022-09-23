@@ -123,6 +123,9 @@ class T2TabulatorRiseDeclineBase(AmpelBaseModel):
                         ['lsstr','lssti'], ['lssti','lsstz'],['lsstz','lssty']]
     max_tgap: int = 30
 
+    # Cut the lightcurve if longer than this limit.
+    # Motivated by worse classification for longer (inbalanced training?)
+    max_ndet: int = 20
 
     if TYPE_CHECKING:
         logger: LoggerProtocol
@@ -204,6 +207,21 @@ class T2TabulatorRiseDeclineBase(AmpelBaseModel):
 
 
 
+    def cut_flux_table(self, flux_table: Table) -> Table:
+        """
+        Limit to some _total_ set of significant detections.
+        """
+        sig_mask = (flux_table['flux']) / flux_table['fluxerr']>self.sigma_det
+        sig_time = list( flux_table['time'][sig_mask] )
+        if len(sig_time)>self.max_ndet:
+            max_time = sorted(sig_time)[self.max_ndet]
+            flux_table = flux_table[ flux_table['time']<=max_time ]
+
+        return flux_table
+
+
+
+
     def compute_stats(self, flux_table: Table) -> dict[str, Any]:
 
         # Output dict that we will start to populate
@@ -221,6 +239,11 @@ class T2TabulatorRiseDeclineBase(AmpelBaseModel):
         if o['ndet']==0:
             o['success'] = False
             o['cause'] = "No data survive significance criteria."
+            # Gather additional information for evaluation
+            o['alldet'] = len(flux_table)
+            neg_mask = (-flux_table['flux']) / flux_table['fluxerr']>self.sigma_det
+            o['nnegdet'] = len( flux_table[band_mask & neg_mask] )
+
             return o
 
         o["jd_det"] = det_table['time'].min()
@@ -316,7 +339,7 @@ class T2TabulatorRiseDeclineBase(AmpelBaseModel):
         return o
 
 
-class T2TabulatorRiseDecline(AbsStateT2Unit, T2TabulatorRiseDeclineBase, AbsTabulatedT2Unit):
+class T2TabulatorRiseDecline(AbsStateT2Unit, AbsTabulatedT2Unit, T2TabulatorRiseDeclineBase):
 
     plot_prob: float = 0.
     path_testplot: str = "/home/jnordin/tmp/t2test/"
@@ -416,6 +439,9 @@ class T2TabulatorRiseDecline(AbsStateT2Unit, T2TabulatorRiseDeclineBase, AbsTabu
         # Using standard tabulators
         flux_table = self.get_flux_table(datapoints)
 
+        # Cut the flux table if requested
+        if self.max_ndet>0 and len(flux_table)>self.max_ndet:
+            flux_table = self.cut_flux_table(flux_table)
 
         # Calculate get_features
         features = self.compute_stats(flux_table)
